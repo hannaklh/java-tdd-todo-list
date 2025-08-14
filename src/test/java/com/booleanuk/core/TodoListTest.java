@@ -7,83 +7,107 @@ import java.util.HashMap;
 import java.util.Map;
 
 class TodoListTest {
-    TodoList toDo;
-    HashMap<String, Boolean> testList = new HashMap<>(Map.of("Clean", false, "Cook", true, "Walk the dog", false));
 
-    public TodoListTest() {
-        this.toDo = new TodoList();
-    }
+
     @Test
     public void shouldAddName() {
+        TodoList newToDo = new TodoList();
         String name = "Clean";
+        boolean result = newToDo.add(name);
 
-        Assertions.assertEquals(true, this.toDo.add(name));
+        Assertions.assertEquals(true, result);
     }
     @Test
     public void shouldView() {
 
-        Assertions.assertEquals("{}", this.toDo.view());
+        TodoList newToDo = new TodoList();
+        newToDo.add("Clean");
 
-        this.toDo.toDos = testList;
+       String[] result = newToDo.view();
 
-        Assertions.assertEquals("{Clean=false, Cook=true, Walk the dog=false}", this.toDo.view());
+        Assertions.assertArrayEquals(new String[]{"Clean"}, result);
 
+        newToDo.add("Cook");
+
+        result = newToDo.view();
+
+        Assertions.assertArrayEquals(new String[]{"Clean", "Cook"}, result);
     }
     @Test
     public void shouldChangeStatus() {
-        this.toDo.add("Nap");
-        this.toDo.changeStatus("Nap");
+        TodoList newToDo = new TodoList();
+        newToDo.add("Nap");
+        boolean result = newToDo.changeStatus("Nap");
 
-        Assertions.assertEquals(true, this.toDo.changeStatus("Nap"));
-
-        this.toDo.changeStatus("Nap");
-        Assertions.assertEquals(false, this.toDo.changeStatus("Nap"));
+        Assertions.assertEquals(true, result);
 
     }
     @Test
     public void shouldViewCompletedTasks() {
 
-        this.toDo.toDos = testList;
+        TodoList newToDo = new TodoList();
+        newToDo.add("Nap");
+        newToDo.add("Fire someone");
+        newToDo.changeStatus("Fire someone");
+        String[] result = newToDo.viewCompletedTasks();
 
-        Assertions.assertEquals("{Cook=true}", this.toDo.viewCompletedTasks());
+        Assertions.assertArrayEquals(new String[]{"Fire someone"}, result);
     }
     @Test
     public void shouldViewIncompletedTasks() {
+        TodoList newToDo = new TodoList();
+        newToDo.add("Nap");
+        newToDo.add("Fire someone");
+        String[] result = newToDo.viewIncompletedTasks();
 
-        this.toDo.toDos = testList;
-
-        Assertions.assertEquals("{Clean=false, Walk the dog=false}", this.toDo.viewCompletedTasks());
+        Assertions.assertArrayEquals(new String[]{"Fire someone", "Nap"}, result);
     }
     @Test
     public void shouldRemoveTask() {
+        TodoList newToDo = new TodoList();
+        newToDo.add("Nap");
+        newToDo.add("Fire someone");
 
-        this.toDo.toDos = testList;
-
-        Assertions.assertEquals(true,  toDo.removeTask("Clean"));
+        boolean result = newToDo.removeTask("Nap");
+        Assertions.assertEquals(true,  result);
 
     }
     @Test
     public void shouldSearchTask() {
-        this.toDo.toDos = testList;
+        TodoList newToDo = new TodoList();
+        newToDo.add("Nap");
+        newToDo.add("Fire someone");
 
-        Assertions.assertEquals("Clean",  toDo.searchTask("Clean"));
+        String result = newToDo.searchTask("Nap");
+        Assertions.assertEquals("Nap was found.",  result);
+
+        result = newToDo.searchTask("Daydreaming");
+        Assertions.assertEquals("No matching task was found.",  result);
 
 
     }
     @Test
     public void shouldSortAsc() {
+        TodoList newToDo = new TodoList();
+        newToDo.add("Nap");
+        newToDo.add("Fire someone");
+        newToDo.add("A little bit of this and that");
 
-        this.toDo.toDos = testList;
-        this.toDo.add("A little bit of this and that");
+        String[] result = newToDo.sortAsc();
 
-        Assertions.assertEquals("{A little bit of this and that=false, Clean=false, Cook=true, Walk the dog=false}",  toDo.sortAsc());
+        Assertions.assertArrayEquals(new String[]{"A little bit of this and that", "Fire someone", "Nap"},  result);
 
     }
     @Test
     public void shouldSortDesc() {
-        this.toDo.toDos = testList;
+        TodoList newToDo = new TodoList();
+        newToDo.add("Nap");
+        newToDo.add("Fire someone");
+        newToDo.add("A little bit of this and that");
 
-        Assertions.assertEquals("{Walk the dog=false, Cook=true, Clean=false}",  toDo.sortDesc());
+        String[] result = newToDo.sortDesc();
+
+        Assertions.assertArrayEquals(new String[]{"Nap", "Fire someone", "A little bit of this and that"},  result);
 
     }
 
